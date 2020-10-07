@@ -1,0 +1,208 @@
+<div class="container-fluid">
+
+  <!--Nav Bar-->
+  <div class="row bg-secondary" style="height: 55px; position: sticky; top: 0px; z-index:9999 ;">
+    <div class="col-3 text-light make-left beautify">
+      {{title}}
+    </div>
+  </div>
+
+
+  <!--Input Block-->
+  <div class="row">
+    <div class="col-3">
+
+    </div>
+
+    <!--At center of screen-->
+    <div class="col-6 alert-secondary rounded p-4">
+      <div class="card">
+        <div class="card-header h6">
+          Create Post
+        </div>
+
+        <div class="card-body">
+          <textarea [(ngModel)]="post.postValue" class="form-control beautify-textarea"  cols="100" rows="2" placeholder="whrite something here..."></textarea>
+        </div>
+
+        <div class="card-footer pb-0" >
+            <a href="#" (click)="postText()" class="badge badge-pill badge-primary ml-1" style="font-size: medium; cursor: pointer;">Post text</a>
+
+            <label class="badge badge-pill badge-info ml-1" style="font-size: medium; cursor: pointer;">
+                Post Image
+              <input (change)="postImage($event)" type="file" style="display: none;">
+            </label>
+
+            <label class="badge badge-pill badge-success ml-1" style="font-size: medium; cursor: pointer;">
+                Post Video
+              <input (change)="uploadVideo($event)" type="file" style="display: none;">
+            </label>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-3">
+
+    </div>
+  </div>
+
+
+  <!--Main section container-->
+  <div class="row mt-2">
+    <div class="col-3">
+
+    </div>
+
+    <!--Parent section for block-->
+    <div class="col-6 ">
+
+      <!--each item represents individual post object-->
+      <ng-container *ngFor="let item of postList; let itemIndex = index;">
+        <!--Text card-->
+        <div *ngIf="item.postType == 'TEXT'" class="card mt-2 " >
+          <div class="card-header h6">
+            khouloud - Text Block
+          </div>
+
+          <!--Card body section is dynamic-->
+          <div class="card-body pb-0">
+            <div class="make-center beautify-post" style="height:100px;">
+              {{item.postValue}}
+            </div>
+
+            <div class="d-flex justify-content-between text-muted">
+              <span class="text-muted badge-light rounded p-1" style="font-size: small;">
+                {{item.likeCount}} Likes
+              </span>
+              <span class="text-muted badge-light rounded p-1" style="font-size: small;">
+                {{item.subscribeCount}} Subscribe
+              </span>
+              <span class="text-muted badge-light rounded p-1" style="font-size: small;">
+                  {{item.commentList.length}} Comments
+              </span>
+            </div>
+          </div>
+
+          <div class="card-footer d-flex justify-content-between pb-1">
+            <div>
+                <a  (click)="likeCount(item)" class=" text-light badge badge-pill badge-primary " style="cursor: pointer;">Like</a>
+                <a  (click)="subscribeCount(item)" class="text-light badge badge-pill badge-info ml-1" style="cursor: pointer;" >Subscribe</a>
+                <a  (click)="addComment(item)" class="text-light badge badge-pill badge-success ml-1" style="cursor: pointer;">Comment</a>
+            </div>
+
+
+            <div>
+                <a  class="text-light badge badge-pill badge-secondary" style="cursor: pointer;" >Update</a>
+                <a (click)="deletePost(itemIndex)"  class="text-light badge badge-pill badge-danger ml-1" style="cursor: pointer;" >Delete</a>
+            </div>
+          </div>
+        </div>
+
+        <!--image card-->
+        <div *ngIf="item.postType == 'IMAGE'" class="card mt-2" >
+          <div class="card-header h6">
+            khouloud - Image Block Reference
+          </div>
+
+          <!--Card body section is dynamic-->
+          <div class="card-body pb-0">
+            <div class="make-center " style="height: 250px;">
+              <img [src]="item.postValue" alt="" style="height: 100%; width: 100%; object-fit: contain;">
+            </div>
+
+            <div class="d-flex justify-content-between text-muted">
+                <span class="text-muted badge-light rounded p-1" style="font-size: small;">
+                  {{item.likeCount}} Likes
+                </span>
+                <span class="text-muted badge-light rounded p-1" style="font-size: small;">
+                  {{item.subscribeCount}} Subscribe
+                </span>
+                <span class="text-muted badge-light rounded p-1" style="font-size: small;">
+                    {{item.commentList.length}} Comments
+                </span>
+              </div>
+          </div>
+
+          <div class="card-footer d-flex justify-content-between pb-1">
+            <div>
+              <a  (click)="likeCount(item)" class=" text-light badge badge-pill badge-primary " style="cursor: pointer;">Like</a>
+              <a  (click)="subscribeCount(item)" class="text-light badge badge-pill badge-info ml-1" style="cursor: pointer;" >Subscribe</a>
+              <a  (click)="addComment(item)" class="text-light badge badge-pill badge-success ml-1" style="cursor: pointer;">Comment</a>
+            </div>
+
+
+            <div>
+              <a  class="text-light badge badge-pill badge-secondary" style="cursor: pointer;" >Update</a>
+              <a (click)="deletePost(itemIndex)"  class="text-light badge badge-pill badge-danger ml-1" style="cursor: pointer;" >Delete</a>
+            </div>
+          </div>
+        </div>
+
+        <!--video card-->
+        <div *ngIf="item.postType == 'VIDEO'" class="card mt-2" >
+          <div class="card-header h6">
+            khouloud - Video Block Reference
+          </div>
+
+          <!--Card body section is dynamic-->
+          <div class="card-body pb-0">
+            <div class="make-center " style="height: 250px;" >
+              <video style="height: 100%; width: 100%; " controls>
+                <source src="assets/vd.mp4"  >
+              </video>
+            </div>
+
+            <div class="d-flex justify-content-between text-muted">
+              <span class="text-muted badge-light rounded p-1" style="font-size: small;">
+                {{item.likeCount}} Likes
+              </span>
+              <span class="text-muted badge-light rounded p-1" style="font-size: small;">
+                {{item.subscribeCount}} Subscribe
+              </span>
+              <span class="text-muted badge-light rounded p-1" style="font-size: small;">
+                {{item.commentList.length}} Comments
+              </span>
+            </div>
+          </div>
+
+          <div class="card-footer d-flex justify-content-between pb-1">
+            <div>
+              <a  (click)="likeCount(item)" class=" text-light badge badge-pill badge-primary " style="cursor: pointer;">Like</a>
+              <a  (click)="subscribeCount(item)" class="text-light badge badge-pill badge-info ml-1" style="cursor: pointer;" >Subscribe</a>
+              <a  (click)="addComment(item)" class="text-light badge badge-pill badge-success ml-1" style="cursor: pointer;">Comment</a>
+            </div>
+
+
+            <div>
+              <a  class="text-light badge badge-pill badge-secondary" style="cursor: pointer;" >Update</a>
+              <a (click)="deletePost(itemIndex)"  class="text-light badge badge-pill badge-danger ml-1" style="cursor: pointer;" >Delete</a>
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
+
+      <!-- No post available-->
+      <div class="card" *ngIf="postList.length === 0">
+        <div class="card-header">
+          header
+        </div>
+
+        <div class="card-body make-center" style="height: 250px">
+            No post available
+        </div>
+
+        <div class="card-footer">
+            footer
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-3">
+
+    </div>
+  </div>
+
+</div>
